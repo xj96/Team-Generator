@@ -53,7 +53,7 @@ function addTeamMember() {
                     {
                         type: "input",
                         message: "What is your GitHub Username?",
-                        name: "githubUserName"
+                        name: "github"
                     },
                 ]).then(function (engineerReply) {
                     const newEngineer = new Engineer(engineerReply.name, engineerReply.id, engineerReply.email, engineerReply.githubUserName);
