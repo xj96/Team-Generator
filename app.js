@@ -9,11 +9,11 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 // writefile will create html page
-const writeFileAsync = util.promisify(fs.writeFile);
+// const writeFileAsync = util.promisify(fs.writeFile);
 
 const render = require("./lib/htmlRenderer");
 
-const util = require("util");
+// const util = require("util");
 const { type } = require("os");
 
 
@@ -26,7 +26,8 @@ function addTeamMember() {
     return inquirer
         .prompt([
             {
-                type: "confirm",
+                type: "list",
+                name: "role",
                 message: "What is your role?",
                 choices: ["Manager", "Intern", "Engineer"]
             },
@@ -141,7 +142,7 @@ function newTeamMember() {
                 name: "addnew"
             },
         ]).then(function (userAddNew) {
-            if (userAddNew) {
+            if (userAddNew.addnew) {
                 addTeamMember();
             } else {
                 // HTML Push Here
@@ -151,8 +152,16 @@ function newTeamMember() {
 }
 
 function pushToHTML() {
+    if (!fs.existsSync(OUTPUT_DIR)) {
+        fs.mkdirSync(OUTPUT_DIR)
+    }
 
+    fs.writeFile(outputPath, render(teamArray), function () {
+        console.log("Success");
+    })
 }
+
+addTeamMember()
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
